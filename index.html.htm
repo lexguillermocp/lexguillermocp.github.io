@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario Menú de Samay</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("m9JXz6WC9jOiuLDLX"); // Reemplaza YOUR_PUBLIC_KEY con tu Public Key de EmailJS
+        })();
+
+        function calcularTotal() {
+            var total = 0;
+            var items = document.querySelectorAll('input[type="checkbox"]:checked');
+            items.forEach(function(item) {
+                total += parseFloat(item.value);
+            });
+            var iva = total * 0.15;
+            var totalConIva = total + iva;
+            document.getElementById('total').innerText = 'Total: $' + totalConIva.toFixed(2) + ' (incluye 15% IVA)';
+        }
+
+        function enviarFormulario(event) {
+            event.preventDefault();
+            var nombre = document.getElementsByName('nombre')[0].value;
+            var items = document.querySelectorAll('input[type="checkbox"]:checked');
+            var seleccionados = [];
+            items.forEach(function(item) {
+                seleccionados.push(item.nextSibling.textContent.trim());
+            });
+            var total = document.getElementById('total').innerText;
+
+            var templateParams = {
+                nombre: nombre,
+                seleccionados: seleccionados.join(', '),
+                total: total
+            };
+
+            emailjs.send('service_wd3shhv', 'template_oiwdntk', templateParams)
+                .then(function(response) {
+                    alert('Formulario enviado correctamente');
+                }, function(error) {
+                    alert('Error al enviar el formulario: ' + JSON.stringify(error));
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Formulario Menú de Samay</h1>
+    <form onsubmit="enviarFormulario(event)">
+        <p>Nombre Completo:</p>
+        <input type="text" name="nombre" required><br><br>
+
+        <p>Elige tus desayunos:</p>
+        <input type="checkbox" name="desayuno" value="7" onclick="calcularTotal()"> PLAYENSE bolón mixto con seco de carne y huevo ($7)<br>
+        <input type="checkbox" name="desayuno" value="8" onclick="calcularTotal()"> SANTA ELENA tortilla de camarón, con patacones, queso y salprieta ($8)<br>
+        <input type="checkbox" name="desayuno" value="7" onclick="calcularTotal()"> GUAYACO encebollado de pescado y chifles ($7)<br>
+        <input type="checkbox" name="desayuno" value="8" onclick="calcularTotal()"> ZARUMEÑO tigrillo con carne mechada y huevo ($8)<br>
+        <input type="checkbox" name="desayuno" value="8" onclick="calcularTotal()"> DULCERO pancakes con fruta, miel, huevos revueltos y tocino ($8)<br>
+        <input type="checkbox" name="desayuno" value="7" onclick="calcularTotal()"> ANDINO mote pillo, huevos revueltos, queso fresco, cebolla blanca ($7)<br>
+        <input type="checkbox" name="desayuno" value="6.5" onclick="calcularTotal()"> FIT tostada de masa madre con aguacate, huevo escalfado y vegetales ($6.5)<br>
+        <input type="checkbox" name="desayuno" value="13.5" onclick="calcularTotal()"> DESAYUNO COMPLETO ($13.5)<br><br>
+
+        <p>Porciones Adicionales ($2.5 cada porción):</p>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> porción de frutas<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> dos láminas de tocino<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> pancake<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> dos huevos<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> láminas de jamón y mozarella<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> tostada con mermelada<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> seco de carne<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> arroz<br>
+        <input type="checkbox" name="porcion" value="2.5" onclick="calcularTotal()"> chifles<br><br>
+
+        <p>Cafés:</p>
+        <input type="checkbox" name="cafe" value="2.5" onclick="calcularTotal()"> Expresso simple ($2.5)<br>
+        <input type="checkbox" name="cafe" value="3" onclick="calcularTotal()"> Expresso doble ($3)<br>
+        <input type="checkbox" name="cafe" value="3" onclick="calcularTotal()"> Macchiato ($3)<br>
+        <input type="checkbox" name="cafe" value="3" onclick="calcularTotal()"> Americano ($3)<br>
+        <input type="checkbox" name="cafe" value="3.3" onclick="calcularTotal()"> Moccachino ($3.3)<br>
+        <input type="checkbox" name="cafe" value="3.3" onclick="calcularTotal()"> Capuccino ($3.3)<br>
+        <input type="checkbox" name="cafe" value="3.5" onclick="calcularTotal()"> Iced Latte ($3.5)<br>
+        <input type="checkbox" name="cafe" value="4.5" onclick="calcularTotal()"> Afogato ($4.5)<br>
+        <input type="checkbox" name="cafe" value="6.9" onclick="calcularTotal()"> Irish Coffee ($6.9)<br><br>
+
+        <p>Jugos / Mocktails (sin alcohol):</p>
+        <input type="checkbox" name="jugo" value="6" onclick="calcularTotal()"> SANDIA NO-JITO ($6)<br>
+        <input type="checkbox" name="jugo" value="6" onclick="calcularTotal()"> GINGERTWIST ($6)<br>
+        <input type="checkbox" name="jugo" value="6" onclick="calcularTotal()"> MANGO DIVINO ($6)<br>
+        <input type="checkbox" name="jugo" value="6" onclick="calcularTotal()"> BOOSTER ($6)<br>
+        <input type="checkbox" name="jugo" value="6" onclick="calcularTotal()"> RADIANCE ($6)<br>
+        <input type="checkbox" name="jugo" value="3.5" onclick="calcularTotal()"> JUGOS variados ($3.5)<br><br>
+
+        <p>Bebidas Soft:</p>
+        <input type="checkbox" name="bebida" value="3" onclick="calcularTotal()"> Agua con/sin gas ($3)<br>
+        <input type="checkbox" name="bebida" value="3" onclick="calcularTotal()"> Coca Cola ($3)<br>
+        <input type="checkbox" name="bebida" value="3" onclick="calcularTotal()"> Sprite ($3)<br>
+        <input type="checkbox" name="bebida" value="3" onclick="calcularTotal()"> Fanta ($3)<br><br>
+
+        <p>DEL MAR:</p>
+        <input type="checkbox" name="del_mar" value="18.9" onclick="calcularTotal()"> CANELONES DE CANGREJO rellenos de verde y queso manaba en salsa arlenciana ($18.9)<br>
+        <input type="checkbox" name="del_mar" value="18.9" onclick="calcularTotal()"> MELOSO BLANCO DE MARISCOS con filete de pesca del día, cilantro y sofrito de mariscos ($18.9)<br>
+        <input type="checkbox" name="del_mar" value="20" onclick="calcularTotal()"> MELOSO DE ARROZ NEGRO con mixtura de mariscos y encocado de calamar ($20)<br>
+        <input type="checkbox" name="del_mar" value="18.9" onclick="calcularTotal()"> MELOSO DE CONCHAS arroz cremoso con conchas ($18.9)<br>
+        <input type="checkbox" name="del_mar" value="18.9" onclick="calcularTotal()"> SOPA MARINERA con langostinos, almejas, mejillones, camarón, calamar, pescado ($18.9)<br>
+        <input type="checkbox" name="del_mar" value="16.5" onclick="calcularTotal()"> ENCOCADO DE PESCADO O CAMARON ($16.5)<br>
+        <input type="checkbox" name="del_mar" value="17.9" onclick="calcularTotal()"> ENCOCADO MIXTO con cebolla perla, cilantro, ajo y leche de coco ($17.9)<br>
+        <input type="checkbox" name="del_mar" value="16.5" onclick="calcularTotal()"> CAZUELA DE PESCADO O CAMARON ($16.5)<br>
+        <input type="checkbox" name="del_mar" value="17.9" onclick="calcularTotal()"> CAZUELA MIXTA con verde, maní y cilantro ($17.9)<br>
+        <input type="checkbox" name="del_mar" value="16.5" onclick="calcularTotal()"> CAMARONES AL AJILLO con cebolla perla, cilantro, perejil, aceite de oliva, ajo, crema de leche y arroz ($16.5)<br>
+        <input type="checkbox" name="del_mar" value="16.5" onclick="calcularTotal()"> PESCADO REBOSADO con pescado dorado, ensalada y patacones ($16.5)<br>
+        <input type="checkbox" name="del_mar" value="12" onclick="calcularTotal()"> ENSALADA DE CAMARON ($12)<br>
+        <input type="checkbox" name="del_mar" value="17" onclick="calcularTotal()"> LANGOSTINOS AL GRILL con vegetales grillados y moro tipo risotto o moro gold ($17)<br>
+        <input type="checkbox" name="del_mar" value="18.9" onclick="calcularTotal()"> CONCHAS ASADAS aguacate, patacones y ensalada ($18.9)<br>
+        <input type="checkbox" name="del_mar" value="20" onclick="calcularTotal()"> SALMON AL GRILL con vegetales grilladas y patacones ($20)<br><br>
+
+        <p>ESPECIALIDADES DEL CHEF:</p>
+        <input type="checkbox" name="especialidades" value="21.5" onclick="calcularTotal()"> CORVINA ENTERA con salsa criolla, aguacate y arroz ($21.5)<br>
+        <input type="checkbox" name="especialidades" value="13" onclick="calcularTotal()"> VICHE DE PESCADO con albacora, mani, vegetales y aguacate ($13)<br>
+        <input type="checkbox" name="especialidades" value="15.5" onclick="calcularTotal()"> BURRITO DE MARISCOS con frejol refrito, aguacate y pico de gallo ($15.5)<br>
+        <input type="checkbox" name="especialidades" value="16" onclick="calcularTotal()"> CALAMAR GRILLADO con salsa humus ($16)<br>
+        <input type="checkbox" name="especialidades" value="65" onclick="calcularTotal()"> LANGOSTA a la diabla, con arroz cremoso de champiñones y espárragos ($65)<br>
+        <input type="checkbox" name="especialidades" value="19.5" onclick="calcularTotal()"> ARROZ MARINERO con mixtura de mariscos, cebolla paiteña, pimiento verde y ajo ($19.5)<br>
+        <input type="checkbox" name="especialidades" value="13" onclick="calcularTotal()"> TIRADITO DE PESCADO pescado encurtido con salsa leche de tigre y cítrico de maracuyá ($13)<br>
+        <input type="checkbox" name="especialidades" value="21.5" onclick="calcularTotal()"> PICANHA con vegetales grillados y moro tipo risotto o moro gold ($21.5)<br><br>
+
+        <p>DE LA TIERRA:</p>
+        <input type="checkbox" name="tierra" value="19.5" onclick="calcularTotal()"> LOMO ASADO con polenta, chimichurri, cebolla, zanahoria y espárragos ($19.5)<br>
+        <input type="checkbox" name="tierra" value="18.9" onclick="calcularTotal()"> HORNADO SAMAY con yapingacho, encurtido y crocante de mote ($18.9)<br>
+        <input type="checkbox" name="tierra" value="18.9" onclick="calcularTotal()"> MELOSO DE CHAMPIÑON Y CHISTORRA con tocino ($18.9)<br>
+        <input type="checkbox" name="tierra" value="19.5" onclick="calcularTotal()"> TOMAHAWK con vegetales grillados y moro tipo risotto o moro gold ($19.5)<br>
+        <input type="checkbox" name="tierra" value="11" onclick="calcularTotal()"> ENSALADA CESAR lechuga, pollo, croutones, parmesano y aderezo cesar ($11)<br><br>
+
+        <p>VEGETARIANA:</p>
+        <input type="checkbox" name="vegetariana" value="9" onclick="calcularTotal()"> TARTAR DE AGUACATE con vinagre balsámico ($9)<br>
+        <input type="checkbox" name="vegetariana" value="10.5" onclick="calcularTotal()"> ENSALADA SAMAY lechuga, espinaca, queso manaba, maíz dulce, huevo cocido, cebolla y nueces acarameladas y aderezo del chef ($10.5)<br>
+        <input type="checkbox" name="vegetariana" value="9.5" onclick="calcularTotal()"> CROQUETAS DE QUESO DE BRIE con miel ($9.5)<br>
+        <input type="checkbox" name="vegetariana" value="9.5" onclick="calcularTotal()"> QUINOA BOWL verduras, champiñones, salsa de frijol ($9.5)<br>
+        <input type="checkbox" name="vegetariana" value="12.5" onclick="calcularTotal()"> BURRITO DE VEGETALES relleno de vegetales salteados con ajo y oliva, guacamole, frijol refrito y pico de gallo ($12.5)<br><br>
+
+        <p>Para picar/compartir:</p>
+        <input type="checkbox" name="picar" value="30" onclick="calcularTotal()"> TABLITA DE QUESO (PARA 4) con quesos variados, chistorra, jamón, aceitunas, nueces ($30)<br>
+        <input type="checkbox" name="picar" value="25.5" onclick="calcularTotal()"> PIQUEO DE MAR Y TIERRA (PARA 3/4) con pollo, lomo fino, pescado, calamar, camarones, salsas ($25.5)<br>
+        <input type="checkbox" name="picar" value="38.5" onclick="calcularTotal()"> PARRILLADA DE MARISCOS O DE MAR Y TIERRA (PARA 3/4) con mariscos o mar y tierra (a especificar) ($38.5)<br>
+        <input type="checkbox" name="picar" value="7.7" onclick="calcularTotal()"> TRES MINI EMPANADAS con queso manaba, camarón, seco de carne ($7.7)<br>
+        <input type="checkbox" name="picar" value="6.5" onclick="calcularTotal()"> SALCHIPAPAS con papas fritas, salchicha ($6.5)<br>
+        <input type="checkbox" name="picar" value="9" onclick="calcularTotal()"> PALITOS DE CALAMAR con salsa golf ($9)<br>
+        <input type="checkbox" name="picar" value="8.5" onclick="calcularTotal()"> SANDWICH DE CAMARON con salsa de queso azul ($8.5)<br>
+        <input type="checkbox" name="picar" value="12" onclick="calcularTotal()"> ALITAS BBQ con papas fritas ($12)<br>
+        <input type="checkbox" name="picar" value="10" onclick="calcularTotal()"> DOS MINI HAMBURGUESAS con cebolla crispy y salsa BBQ ($10)<br>
+        <input type="checkbox" name="picar" value="9.5" onclick="calcularTotal()"> CORVICHE DE ALBACORA en salsa de mariscos y cilantro ($9.5)<br>
+        <input type="checkbox" name="picar" value="12" onclick="calcularTotal()"> CAMARONES AL PANKO con mayonesa de cilantro ($12)<br>
+        <input type="checkbox" name="picar" value="12" onclick="calcularTotal()"> SAMAY CLUB SANDWICH con carne, pollo, tocino, tomate, lechuga y alioli ($12)<br><br>
+
+        <p>PORCIONES:</p>
+        <input type="checkbox" name="porciones" value="3.5" onclick="calcularTotal()"> Papas fritas ($3.50)<br>
+        <input type="checkbox" name="porciones" value="3.5" onclick="calcularTotal()"> Maduro ($3.50)<br>
+        <input type="checkbox" name="porciones" value="3.5" onclick="calcularTotal()"> Patacones ($3.50)<br>
+        <input type="checkbox" name="porciones" value="3.5" onclick="calcularTotal()"> Arroz ($3.50)<br><br>
+
+        <p>CEVICHES:</p>
+        <p>ELIGE LA BASE:</p>
+        <input type="checkbox" name="ceviche_base" value="0" onclick="calcularTotal()"> Base blanca<br>
+        <input type="checkbox" name="ceviche_base" value="0" onclick="calcularTotal()"> Base estilo jipijapa con maní<br>
+        <input type="checkbox" name="ceviche_base" value="0" onclick="calcularTotal()"> Base de tomate<br>
+        <input type="checkbox" name="ceviche_base" value="0" onclick="calcularTotal()"> Base Siwichi, origen Kichwa, una preparación picante, con pescado crudo en su mayoría, con frutas ecuatorianas como maracuyá, hierbita y pimientos de colores<br><br>
+
+        <input type="checkbox" name="ceviche" value="16.5" onclick="calcularTotal()"> Ceviche Marinero (Variedad de mariscos: pescado, camarón, concha, calamar, almeja, mejillones y patitas de cangrejo) ($16.50)<br>
+        <input type="checkbox" name="ceviche" value="11.5" onclick="calcularTotal()"> Ceviche de Concha Negra ($11.50)<br>
+        <input type="checkbox" name="ceviche" value="12.5" onclick="calcularTotal()"> Ceviche de Pescado o Camarón (A elegir) ($12.50)<br>
+        <input type="checkbox" name="ceviche" value="13" onclick="calcularTotal()"> Ceviche Mixto (Combinación de mariscos, especificar al ordenar) ($13)<br><br>
+
+        <p>PARA NIÑOS:</p>
+        <input type="checkbox" name="ninos" value="5.5" onclick="calcularTotal()"> Canastitas de verde con camarón y guacamole ($5.50)<br>
+        <input type="checkbox" name="ninos" value="5.5" onclick="calcularTotal()"> Pollo a la plancha (con puré o arroz) ($5.50)<br>
+        <input type="checkbox" name="ninos" value="5.5" onclick="calcularTotal()"> Nuggets de pescado o pollo (con papas fritas) ($5.50)<br>
+        <input type="checkbox" name="ninos" value="5.5" onclick="calcularTotal()"> Consomé de pollo ($5.50)<br>
+        <input type="checkbox" name="ninos" value="2.5" onclick="calcularTotal()"> Porción de frutas ($2.50)<br><br>
+
+        <p>POSTRES:</p>
+        <input type="checkbox" name="postres" value="7.5" onclick="calcularTotal()"> Cubo de chocolate relleno de mousse de avellanas, chocolate, praliné y helado ($7.50)<br>
+        <input type="checkbox" name="postres" value="6" onclick="calcularTotal()"> Crème brûlée ($6)<br>
+        <input type="checkbox" name="postres" value="6" onclick="calcularTotal()"> Cheesecake de maracuyá ($6)<br>
+        <input type="checkbox" name="postres" value="6" onclick="calcularTotal()"> Samay Tres Leches (Bizcocho humedecido con salsa de tres leches) ($6)<br>
+        <input type="checkbox" name="postres" value="6" onclick="calcularTotal()"> Tiramisú ($6)<br>
+        <input type="checkbox" name="postres" value="4.9" onclick="calcularTotal()"> El Playero (con arroz, leche de coco y frutas frescas - caliente) ($4.90)<br>
+        <input type="checkbox" name="postres" value="4.9" onclick="calcularTotal()"> Vino dulce (dos bolitas de helado empapado en vino tinto) ($4.90)<br>
+        <input type="checkbox" name="postres" value="3.5" onclick="calcularTotal()"> Postrelado (helado de paleta) ($3.50)<br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+    <h2 id="total">Total: $0.00 (incluye 15% IVA)</h2>
+</body>
+</html>
